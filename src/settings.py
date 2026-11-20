@@ -204,6 +204,7 @@ def get_default_config():
     config_dict['contact']={}
     config_dict["contact"]["real_name"] = ""
     config_dict["contact"]["phone"] = ""
+    config_dict["contact"]["email"] = ""
     config_dict["contact"]["credit_card_prefix"] = ""
 
     # Accounts section (cookies, accounts, passwords)

@@ -66,6 +66,7 @@ const auto_guess_options = document.querySelector('#auto_guess_options');
 // user info - personal data
 const real_name = document.querySelector('#real_name');
 const phone = document.querySelector('#phone');
+const contact_email = document.querySelector('#contact_email');
 const credit_card_prefix = document.querySelector('#credit_card_prefix');
 
 // auto fill
@@ -629,6 +630,8 @@ function renderAutofillTabTranslations() {
     setRowLabelForField('credit_card_prefix', 'Card number prefix (digits)');
     applyOrRestore('#real_name', 'placeholder', 'Enter your legal name');
     applyOrRestore('#phone', 'placeholder', 'Example: 0912345678');
+    applyOrRestore('#contact_email', 'placeholder', 'Example: name@example.com');
+    setNearestFormText('contact_email', 'Booker email on the EZTABLE booking form');
     applyOrRestore('#credit_card_prefix', 'placeholder', 'Example: 412345 or 41234567');
     setNearestFormText('credit_card_prefix', 'Some platforms may require a card number prefix for verification; enter the number of leading digits required by the event.');
 
@@ -1335,6 +1338,7 @@ function load_settins_to_form(settings)
         if (settings.contact) {
             real_name.value = settings.contact.real_name || '';
             phone.value = settings.contact.phone || '';
+            contact_email.value = settings.contact.email || '';
             credit_card_prefix.value = settings.contact.credit_card_prefix || '';
         }
 
@@ -1664,6 +1668,7 @@ function save_changes_to_dict(silent_flag)
             if (!settings.contact) settings.contact = {};
             settings.contact.real_name = real_name.value;
             settings.contact.phone = phone.value;
+            settings.contact.email = contact_email.value.trim();
             settings.contact.credit_card_prefix = credit_card_prefix_value;
 
             // auto fill (accounts section)

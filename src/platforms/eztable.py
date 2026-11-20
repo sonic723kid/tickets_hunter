@@ -25,6 +25,7 @@ import time
 import util
 from nodriver_common import (
     CONST_FROM_TOP_TO_BOTTOM,
+    CONST_NATIVE_INPUT_SETTER_JS,
     play_sound_while_ordering,
     send_discord_notification,
     send_telegram_notification,
@@ -36,6 +37,7 @@ __all__ = [
     "nodriver_eztable_date_auto_select",
     "nodriver_eztable_area_auto_select",
     "nodriver_eztable_confirm_order",
+    "nodriver_eztable_auto_fill",
     "nodriver_eztable_booking",
     "nodriver_eztable_main",
 ]
@@ -51,6 +53,14 @@ CONST_EZTABLE_NEXT_CLICK_COOLDOWN = 3.0
 # The panel re-renders for a moment after each pick; an empty read in that
 # window is not "sold out", so no reload until the page has settled.
 CONST_EZTABLE_SETTLE_SECONDS = 2.0
+CONST_EZTABLE_MAX_FILL_TRIES = 5
+# Booker fields on /booking/form. Only these are filled; the cardholder name and
+# cardholder email belong to the payment section and stay with the user.
+CONST_EZTABLE_FORM_FIELDS = (
+    ("real_name", 'input[name="bookName"]'),
+    ("phone", 'input[type="tel"][autocomplete="tel"]'),
+    ("email", 'input[name="bookEmail"]'),
+)
 
 _state = {}
 
@@ -411,6 +421,49 @@ async def _eztable_restaurant_page(tab, url, config_dict):
     return False
 
 
+# Stage 8: fill booker name / phone / email from the shared contact settings.
+# Fields that already hold a value (EZTABLE pre-fills the login phone) are left
+# untouched, and nothing in the payment section is filled.
+async def nodriver_eztable_auto_fill(tab, config_dict):
+    debug = util.create_debug_logger(config_dict)
+    if _state.get("form_filled") or _state.get("fill_tries", 0) >= CONST_EZTABLE_MAX_FILL_TRIES:
+        return
+    contact = config_dict.get("contact", {})
+    wanted = [(key, selector, str(contact.get(key, "")).strip())
+              for key, selector in CONST_EZTABLE_FORM_FIELDS]
+    wanted = [(key, selector, value) for key, selector, value in wanted if value]
+    if not wanted:
+        _state["form_filled"] = True
+        return
+    # The form renders in steps; space the tries out so they span ~5 seconds.
+    now = time.monotonic()
+    if now - _state.get("last_fill_try", 0) < 1.0:
+        return
+    _state["last_fill_try"] = now
+    _state["fill_tries"] = _state.get("fill_tries", 0) + 1
+
+    result = await tab.evaluate('''
+        (() => {
+''' + CONST_NATIVE_INPUT_SETTER_JS + '''
+            const wanted = ''' + json.dumps([[k, s, v] for k, s, v in wanted]) + ''';
+            const out = {};
+            for (const [key, selector, value] of wanted) {
+                const matches = [...document.querySelectorAll(selector)];
+                if (matches.length !== 1) { out[key] = 'not_found'; continue; }
+                const input = matches[0];
+                if (input.value && input.value.trim()) { out[key] = 'kept'; continue; }
+                out[key] = setNativeInputValue(input, value) ? 'filled' : 'failed';
+            }
+            return JSON.stringify(out);
+        })()
+    ''')
+    status = json.loads(result) if isinstance(result, str) else {}
+    # Log field names and outcome only, never the personal values themselves.
+    debug.log(f"[EZTABLE FILL] try {_state['fill_tries']}: {status}")
+    if status and all(v in ("filled", "kept") for v in status.values()):
+        _state["form_filled"] = True
+
+
 # Stage 11: booking form -- login or payment, both left to the user.
 async def nodriver_eztable_booking(tab, config_dict):
     debug = util.create_debug_logger(config_dict)
@@ -428,6 +481,8 @@ async def nodriver_eztable_booking(tab, config_dict):
             if play_sound.get("ticket", True):
                 play_sound_while_ordering(config_dict)
         return False
+
+    await nodriver_eztable_auto_fill(tab, config_dict)
 
     if not _state.get("order_notified"):
         _state["order_notified"] = True
@@ -467,6 +522,9 @@ async def nodriver_eztable_main(tab, url, config_dict):
         if re.search(r"/restaurant/\d+/?$", path):
             _state["login_notified"] = False
             _state["order_notified"] = False
+            _state["form_filled"] = False
+            _state["fill_tries"] = 0
+            _state["last_fill_try"] = 0
             return await _eztable_restaurant_page(tab, url, config_dict)
     except Exception as exc:
         debug.log(f"[EZTABLE MAIN] Error: {exc}")
