@@ -36,6 +36,8 @@ Tickets Hunter 是一個開放原始碼的多平台搶票自動化系統，支�
 | 🇹🇼 台灣 | 拓元 TixCraft、添翼 Teamear、獨立音樂 Indievox、KKTIX、遠大 TicketPlus、ibon、寬宏 KHAM、年代售票、UDN 售票網、全網 FamiTicket、FANSI GO、FunOne |
 | 🌏 海外 | Ticketmaster SG、Cityline 買飛、HKTicketing 快達票、澳門銀河、Ticketek |
 
+🍽️ **餐廳訂位（個人 fork 新增）**：EZTABLE 簡單桌（自動選人數、日期、時段並進入訂位表單；登入與付款由使用者手動完成）
+
 🧪 **已支援、尚未真站實測**：中職售票（中信兄弟、味全龍、富邦悍將，以及同系統的籃球隊中信特攻、富邦勇士；寬宏系統的新版網站，開發時正值季後、沒有賽事）、Ticketmaster PH（選張數頁未驗證）
 
 ---
@@ -151,6 +153,7 @@ tickets_hunter/
 │   │   │   ├── cityline.py         # Cityline 買飛
 │   │   │   ├── hkticketing.py      # 快達票 / 澳門銀河 / Ticketek
 │   │   │   ├── funone.py           # FunOne
+│   │   │   ├── eztable.py          # EZTABLE 簡單桌（餐廳訂位）
 │   │   │   └── facebook.py         # Facebook 登入輔助
 │   │   └── util.py                 # 共用工具函式（文字比對、關鍵字解析、DebugLogger）
 │   ├── ⚙️ 設定介面

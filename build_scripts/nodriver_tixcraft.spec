@@ -54,6 +54,7 @@ a = Analysis(
         'platforms.ibon',
         'platforms.kham',
         'platforms.hkticketing',
+        'platforms.eztable',
         # Chrome downloader dependencies
         'requests',
         # Image processing

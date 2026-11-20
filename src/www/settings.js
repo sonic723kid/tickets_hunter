@@ -449,6 +449,7 @@ function renderBasicTabTranslations() {
   <button type="button" class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="fillHomepage('https://ticketplus.com.tw')">TicketPlus</button>
   <button type="button" class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="fillHomepage('https://tickets.funone.io')">FunOne Tickets</button>
   <button type="button" class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="fillHomepage('https://go.fansi.me')">FANSI GO</button>
+  <button type="button" class="btn btn-outline-primary btn-sm me-2 mb-2" onclick="fillHomepage('https://tw.eztable.com')">EZTABLE</button>
 </div>
 
 <h6><strong>International</strong></h6>
@@ -871,6 +872,7 @@ const PROFILE_PLATFORMS = [
     { slug: 'ticketplus',   label: 'TicketPlus 遠大',  homepage: 'https://ticketplus.com.tw' },
     { slug: 'funone',       label: 'FunOne',           homepage: 'https://tickets.funone.io' },
     { slug: 'fansigo',      label: 'FANSI GO',         homepage: 'https://go.fansi.me' },
+    { slug: 'eztable',      label: 'EZTABLE 簡單桌',   homepage: 'https://tw.eztable.com' },
     { slug: 'cityline',     label: 'Cityline',         homepage: 'https://www.cityline.com' },
     { slug: 'urbtix',       label: 'Urbtix',           homepage: 'https://ticket.urbtix.hk' },
     { slug: 'hkticketing',  label: 'HKTicketing',      homepage: 'https://hotshow.hkticketing.com/' },
@@ -1113,6 +1115,7 @@ const PLATFORM_MAP = [
     { key: 'hkticketing', domains: ['hkticketing.com', 'galaxymacau.com', 'ticketek.com'] },
     { key: 'funone',      domains: ['funone.io'] },
     { key: 'fansigo',     domains: ['fansi.me'] },
+    { key: 'eztable',     domains: ['eztable.com'] },
     { key: 'urbtix',      domains: ['urbtix.hk'] },
 ];
 

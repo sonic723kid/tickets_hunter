@@ -73,6 +73,7 @@
 - **platforms/ibon.py** - iBon + Tour iBon 平台（25 函式）
 - **platforms/kham.py** - KHAM + ticket.com.tw + UDN + 中職售票（UTK RWD）平台（21 函式）
 - **platforms/hkticketing.py** - HKTicketing + GalaxyMacau + Ticketek 平台（30 函式）
+- **platforms/eztable.py** - EZTABLE 簡單桌餐廳訂位（6 個公開函式）
 
 ### 🌐 支援平台清單
 
@@ -88,6 +89,7 @@
 - **UDN售票網** - https://tickets.udnfunlife.com/
 - **中職售票（UTK RWD，尚未真站實測）** - 中信兄弟 https://tix.ctbcsports.com/、味全龍 https://tix.wdragons.com/、富邦悍將 https://guardians.fami.life/；同系統籃球隊：新北中信特攻 https://tix.ctbcsports.com/DEA 、臺北富邦勇士 https://tix.fubonbraves.com
 - **TicketPlus 遠大** - https://ticketplus.com.tw/
+- **EZTABLE 簡單桌（餐廳訂位）** - https://tw.eztable.com/
 
 #### 海外地區
 - **Urbtix 城市** - http://www.urbtix.hk/
@@ -360,6 +362,19 @@ FamiTicket 主流程
 ├── nodriver_fami_date_to_area               # platforms/famiticket.py ✅ (日期/區域協調器)
 ├── nodriver_fami_ticket_select              # platforms/famiticket.py ✅ (票種選擇頁面)
 └── nodriver_fami_home_auto_select           # platforms/famiticket.py ✅ (首頁入口分派)
+```
+
+### 🍽️ **EZTABLE 簡單桌** (2026.11.22 新增，餐廳訂位)
+
+#### 函式清單 (platforms/eztable.py)
+```
+EZTABLE 主流程（餐廳頁 /restaurant/{id}）
+├── nodriver_eztable_main                    # 主控制器（URL 路由器）
+├── nodriver_eztable_assign_ticket_number    # 階段 6：用餐人數（ticket_number）
+├── nodriver_eztable_date_auto_select        # 階段 4：日期（date_keyword，支援 2026-11-28、11/28、週六）
+├── nodriver_eztable_area_auto_select        # 階段 5：時段（area_keyword，支援 18:00、18、11:30-12:30）
+├── nodriver_eztable_confirm_order           # 階段 10：按「填寫付款資訊」進入訂位表單（不付款）
+└── nodriver_eztable_booking                 # 階段 11：表單頁，偵測登入或付款並通知使用者
 ```
 
 ### 🎪 **FunOne Tickets** (v2026.01.13 新增)

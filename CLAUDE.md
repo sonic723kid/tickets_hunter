@@ -116,6 +116,7 @@ nodriver_tixcraft  ->  platforms/*  ->  nodriver_common  ->  util / settings
 | `platforms/hkticketing.py` | HKTicketing 快達票、澳門銀河、Ticketek |
 | `platforms/fansigo.py` | FANSI GO |
 | `platforms/funone.py` | FunOne |
+| `platforms/eztable.py` | EZTABLE 簡單桌（餐廳訂位，個人 fork 新增） |
 | `platforms/facebook.py` | Facebook 登入輔助 |
 
 ---

@@ -52,6 +52,7 @@ from platforms.tixcraft import *
 from platforms.ibon import *
 from platforms.kham import *
 from platforms.hkticketing import *
+from platforms.eztable import *
 
 CONST_CITYLINE_SIGN_IN_URL = "https://www.cityline.com/Login.html?targetUrl=https%3A%2F%2Fwww.cityline.com%2FEvents.html"
 CONST_CITYLINE_HK_SIGN_IN_URL = "https://www.cityline.com.hk/Login.html?targetUrl=%s"
@@ -1053,6 +1054,10 @@ async def main(args):
         # FANSI GO
         if 'go.fansi.me' in url:
             tab = await nodriver_fansigo_main(tab, url, config_dict)
+
+        # EZTABLE restaurant booking
+        if 'tw.eztable.com' in url:
+            await nodriver_eztable_main(tab, url, config_dict)
 
         # FANSI GO Cognito login
         if FANSIGO_COGNITO_DOMAIN in url:
