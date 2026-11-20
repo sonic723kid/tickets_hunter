@@ -2,6 +2,18 @@
 
 > 本功能為個人 fork 新增，僅供自己訂位使用。EZTABLE 服務條款禁止轉售餐券圖利。
 
+## 怎麼啟動（從原始碼執行）
+
+個人 fork 沒有 `settings.exe`，請雙擊專案資料夾裡的 **`settings.bat`**，
+它會用 `.venv` 裡的 Python 開啟設定介面（瀏覽器會自動打開設定頁），之後在設定頁按「搶票」即可。
+
+第一次使用前要先建立 `.venv`（只需做一次）：
+
+```
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirement.txt
+```
+
 ## 程式會做什麼
 
 1. 開啟設定的餐廳頁，例如 `https://tw.eztable.com/restaurant/1730`
